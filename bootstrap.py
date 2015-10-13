@@ -290,7 +290,7 @@ else:
 	print_generic('This system is not registered to RHN. Attempting to register via subscription-manager')
 	create_host()
 	get_bootstrap_rpm()
-	register_systems(ORG,ACTIVATIONKEY,options.release)
+	register_systems(ORG,ACTIVATIONKEY, options.release)
 
 enable_sat_tools()
 install_katello_agent()
