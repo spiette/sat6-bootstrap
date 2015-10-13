@@ -56,6 +56,7 @@ if not PASSWORD:
 
 if VERBOSE:
     print "HOSTNAME - %s" % HOSTNAME
+    print "RELEASE - %s" % RELEASE
     print "MAC - %s" % MAC
     print "SAT6_FQDN - %s" % SAT6_FQDN
     print "LOGIN - %s" % LOGIN
