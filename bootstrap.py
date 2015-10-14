@@ -298,6 +298,7 @@ def get_subscription_server():
 
 def reset_subscription():
         if get_subscription_server() == 'subscription.rhn.redhat.com':
+            print_generic('This is system has been using subscription.rhn.redhat.com')
             if get_subscription_status() == 'valid':
                 exec_failok('subscription-manager remove --all')
             exec_failok('subscription-manager unregister')
