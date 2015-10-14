@@ -281,12 +281,12 @@ def get_subscription_status():
             with open('/var/lib/rhsm/cache/entitlement_status.json', 'r') as f:
                 j = json.load(f)
                 f.close()
-            if j['status'] is not None:
+            if j.has_key('status'):
                 return j['status']
             else:
-                return str()
+                return None
         except EnvironmentError:
-                return str()
+                return None
 
 def get_subscription_server():
         config = ConfigParser.SafeConfigParser()
