@@ -9,6 +9,7 @@ import commands
 import subprocess
 import platform
 import os.path
+import ConfigParser
 from datetime import datetime
 from optparse import OptionParser
 from uuid import getnode
@@ -275,8 +276,29 @@ def check_rhn_registration():
 	else:
 	     return False
 	
-	
+def get_subscription_status():
+        with open('/var/lib/rhsm/cache/entitlement_status.json', 'r') as f:
+            j = json.load(f)
+            f.close()
+        if j['status'] is defined:
+            return j['status']
+        else:
+            return str()
 
+def get_subscription_server():
+        config = ConfigParser.SafeConfigParser()
+        config.read('/etc/rhsm/rhsm.conf')
+        server = None
+        if config.has_option('server', 'hostname'):
+            server = config.get('server', 'hostname')
+        return server
+
+def reset_subscription():
+        if get_subscription_server() == 'subscription.rhn.redhat.com':
+            if get_subscription_status() == 'valid':
+                exec_failok('subscription-manager remove --all')
+            exec_failok('subscription-manager unregister')
+            exec_failok('subscription-manager clean')
 
 print "Satellite 6 Bootstrap Script"
 print "This script is designed to register new systems or to migrate an existing system to Red Hat Satellite 6"
@@ -289,6 +311,7 @@ if check_rhn_registration():
 	migrate_systems(ORG,ACTIVATIONKEY)
 else:
 	print_generic('This system is not registered to RHN. Attempting to register via subscription-manager')
+        reset_subscription()
 	create_host()
 	get_bootstrap_rpm()
 	register_systems(ORG,ACTIVATIONKEY, options.release)
