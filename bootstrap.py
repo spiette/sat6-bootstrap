@@ -280,7 +280,7 @@ def get_subscription_status():
         with open('/var/lib/rhsm/cache/entitlement_status.json', 'r') as f:
             j = json.load(f)
             f.close()
-        if j['status'] is defined:
+        if j['status'] is not None:
             return j['status']
         else:
             return str()
