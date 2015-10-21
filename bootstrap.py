@@ -309,6 +309,9 @@ def reset_subscription():
                 exec_failok('subscription-manager remove --all')
             exec_failok('subscription-manager unregister')
             exec_failok('subscription-manager clean')
+        elif get_subscription_server() != SAT6_FQDN:
+            print_generic('This is system is not using subscription.rhn.redhat.com or the specified Red Hat Satellite 6 server')
+            print_error('Migrate this system manually')
 
 print "Satellite 6 Bootstrap Script"
 print "This script is designed to register new systems or to migrate an existing system to Red Hat Satellite 6"
