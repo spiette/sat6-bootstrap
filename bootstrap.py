@@ -275,7 +275,7 @@ def check_rhn_registration():
              # Converted systems still have this file
              command = "/usr/sbin/subscription-manager status"
              [ status, output ] = commands.getstatusoutput(command)
-	     return True if status == False else False
+	     return True if status != 0 else False
 	else:
 	     return False
 	
