@@ -272,7 +272,10 @@ def create_host():
 
 def check_rhn_registration():
 	if os.path.exists('/etc/sysconfig/rhn/systemid'):
-	     return True
+             # Converted systems still have this file
+             command = "/usr/sbin/subscription-manager status"
+             [ status, output ] = commands.getstatusoutput(command)
+	     return True if status == False else False
 	else:
 	     return False
 	
