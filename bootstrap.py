@@ -132,7 +132,7 @@ def migrate_systems(org_name,ak):
   #print_generic("First Prompt is for RHN Classic / Satellite 5 credentials")
   #print_generic("Second Prompt is for Satellite 6 credentials")
   #subprocess.call("/usr/sbin/rhn-migrate-classic-to-rhsm")
-  exec_failexit("/usr/sbin/rhn-migrate-classic-to-rhsm --org %s --activationkey %s --keep" % (org_label,ak))
+  exec_failexit("/usr/sbin/rhn-migrate-classic-to-rhsm --org %s --activation-key %s --keep" % (org_label,ak))
 
 def register_systems(org_name,ak,release):
   org_label=return_matching_org_label(org_name)
