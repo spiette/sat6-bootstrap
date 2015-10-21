@@ -31,6 +31,7 @@ parser.add_option("-L", "--location", dest="location", default='Default_Location
 parser.add_option("-o", "--organization", dest="org", default='Default_Organization', help="Name of the Organization in Satellite that the host is to be associated with", metavar="ORG_NAME")
 parser.add_option("-v", "--verbose", dest="verbose", action="store_true", help="Verbose output")
 parser.add_option("-r", "--release", dest="release", default=RELEASE, help="Specify release version")
+parser.add_option("-m", "--migrate-from-rhn", dest="migrate_from_rhn", default=False, help="run rhn-migrate-classic-to-rhsm")
 (options, args) = parser.parse_args()
 
 if not ( options.sat6_fqdn and options.login and options.hostgroup and options.location and options.org and options.activationkey):
@@ -46,6 +47,7 @@ else:
     LOCATION  = options.location
     ORG       = options.org
     ACTIVATIONKEY = options.activationkey
+    MIGRATE_FROM_RHN = options.migrate_from_rhn
 
 if options.verbose:
     VERBOSE=True
@@ -66,6 +68,7 @@ if VERBOSE:
     print "LOCATION - %s" % LOCATION
     print "ORG - %s" % ORG
     print "ACTIVATIONKEY - %s" % ACTIVATIONKEY
+    print "MIGRATE_FROM_RHN - %s" % MIGRATE_FROM_RHN
 
 class error_colors:
     HEADER = '\033[95m'
@@ -311,11 +314,17 @@ print "Satellite 6 Bootstrap Script"
 print "This script is designed to register new systems or to migrate an existing system to Red Hat Satellite 6"
 
 if check_rhn_registration():
-	print_generic('This system is registered to RHN. Attempting to migrate via rhn-classic-migrate-to-rhsm')
-	create_host()
-	install_prereqs()
-	get_bootstrap_rpm()
-	migrate_systems(ORG,ACTIVATIONKEY)
+	print_generic('This system is registered to RHN.')
+        if MIGRATE_FROM_RHN:
+            print_generic('Attempting to migrate via rhn-classic-migrate-to-rhsm')
+            create_host()
+            install_prereqs()
+            get_bootstrap_rpm()
+            migrate_systems(ORG,ACTIVATIONKEY)
+        else:
+            print_generic('Not attempting to migrate via rhn-classic-migrate-to-rhsm')
+            sys.exit(1);
+
 else:
 	print_generic('This system is not registered to RHN. Attempting to register via subscription-manager')
         reset_subscription()
