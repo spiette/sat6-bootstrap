@@ -63,7 +63,6 @@ if VERBOSE:
     print "MAC - %s" % MAC
     print "SAT6_FQDN - %s" % SAT6_FQDN
     print "LOGIN - %s" % LOGIN
-    print "PASSWORD - %s" % PASSWORD
     print "HOSTGROUP - %s" % HOSTGROUP
     print "LOCATION - %s" % LOCATION
     print "ORG - %s" % ORG
@@ -327,7 +326,6 @@ if check_rhn_registration():
         else:
             print_generic('Not attempting to migrate via rhn-classic-migrate-to-rhsm')
             sys.exit(1);
-
 else:
 	print_generic('This system is not registered to RHN. Attempting to register via subscription-manager')
         reset_subscription()
