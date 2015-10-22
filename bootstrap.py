@@ -283,8 +283,13 @@ def check_rhn_registration():
              # Converted systems still have this file
              command = "/usr/sbin/subscription-manager status"
              [ status, output ] = commands.getstatusoutput(command)
-	     return True if status != 0 else False
+             if status == 0:
+                 print_warning("RHN and RHSM are configured on this system. Assuming RHSM.")
+                 return False
+             else:
+                 return True
 	else:
+             print_generic('This system is not registered to RHN.')
 	     return False
 	
 def get_subscription_status():
@@ -333,7 +338,7 @@ if check_rhn_registration():
             print_generic('Not attempting to migrate via rhn-classic-migrate-to-rhsm')
             sys.exit(1);
 else:
-	print_generic('This system is not registered to RHN. Attempting to register via subscription-manager')
+	print_generic('Attempting to register via subscription-manager')
         reset_subscription()
 	create_host()
 	get_bootstrap_rpm()
