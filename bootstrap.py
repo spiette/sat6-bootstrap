@@ -10,7 +10,7 @@ import subprocess
 import platform
 import os.path
 import ConfigParser
-from distutils import StrictVersion
+from distutils.version import StrictVersion
 from datetime import datetime
 from optparse import OptionParser
 from uuid import getnode
