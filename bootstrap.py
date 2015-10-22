@@ -9,6 +9,7 @@ import commands
 import subprocess
 import platform
 import os.path
+import shutil
 import ConfigParser
 from distutils.version import StrictVersion
 from datetime import datetime
@@ -281,10 +282,15 @@ def create_host():
 def check_rhn_registration():
 	if os.path.exists('/etc/sysconfig/rhn/systemid'):
              # Converted systems still have this file
-             command = "/usr/sbin/subscription-manager status"
+             command = "subscription-manager status"
              [ status, output ] = commands.getstatusoutput(command)
              if status == 0:
-                 print_warning("RHN and RHSM are configured on this system. Assuming RHSM.")
+                 print_warning('RHN and RHSM are configured on this system. Assuming RHSM and removing RHN tools.')
+                 exec_failok('/usr/bin/yum -y remove rhn\*')
+                 try:
+                     shutil.move('/etc/sysconfig/rhn/systemid', '/etc/sysconfig/rhn/rhn.systemid')
+                 except:
+                     print_error('Could not rename /etc/sysconfig/rhn/systemid to /etc/sysconfig/rhn/rhn.systemid.')
                  return False
              else:
                  return True
