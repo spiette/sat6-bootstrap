@@ -10,6 +10,7 @@ import subprocess
 import platform
 import os.path
 import ConfigParser
+from distutils import StrictVersion
 from datetime import datetime
 from optparse import OptionParser
 from uuid import getnode
@@ -145,6 +146,11 @@ def register_systems(org_name,ak,release):
 def enable_sat_tools():
   print_generic("Enabling the Satellite tools repositories for Puppet & Katello Agents")
   exec_failexit("subscription-manager repos --enable=rhel-*-satellite-tools-*-rpms")
+
+def enable_optional():
+  if StrictVersion(RELEASE) < StrictVersion('7'):
+    print_generic("Enabling the Optional repositories for Puppet dependencies")
+    exec_failexit("subscription-manager repos --enable=rhel-6-*-optional-rpms")
 
 def install_katello_agent():
   print_generic("Installing the Katello agent")
@@ -334,6 +340,7 @@ else:
 	register_systems(ORG,ACTIVATIONKEY, options.release)
 
 enable_sat_tools()
+enable_optional()
 install_katello_agent()
 install_puppet_agent()
 fully_update_the_box()
