@@ -148,7 +148,7 @@ def enable_sat_tools():
   exec_failexit("subscription-manager repos --enable=rhel-*-satellite-tools-*-rpms")
 
 def enable_optional():
-  if StrictVersion(RELEASE) < StrictVersion('7'):
+  if StrictVersion(RELEASE) < StrictVersion('7.0'):
     print_generic("Enabling the Optional repositories for Puppet dependencies")
     exec_failexit("subscription-manager repos --enable=rhel-6-*-optional-rpms")
 
